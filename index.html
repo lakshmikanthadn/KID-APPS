@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Typing Game</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(to right, #ffe082, #ffcc80);
+            text-align: center;
+            padding: 2em;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #e65100;
+        }
+
+        select,
+        button {
+            font-size: 1.2em;
+            padding: 0.6em 1.2em;
+            border-radius: 12px;
+            border: none;
+            margin: 0.5em;
+            background-color: #ffb74d;
+            color: #4e342e;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        select {
+            background-color: #fff;
+        }
+
+        button:hover {
+            background-color: #ffa726;
+        }
+
+        .letter-box {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 0.3em;
+            font-size: 2em;
+            border-radius: 10px;
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            vertical-align: middle;
+            line-height: 60px;
+            transition: transform 0.2s ease;
+        }
+
+        .correct {
+            color: #2e7d32;
+            border-color: #2e7d32;
+            background-color: #c8e6c9;
+        }
+
+        .wrong {
+            color: #c62828;
+            border-color: #c62828;
+            background-color: #ffcdd2;
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+
+        #game {
+            background: #fffde7;
+            padding: 2em;
+            border-radius: 20px;
+            margin-top: 2em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #emoji {
+            font-size: 2.5em;
+            margin-top: 1em;
+        }
+
+        option[disabled] {
+            color: gray;
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(to bottom right, #fceabb, #f8b500);
+            color: #333;
+            text-align: center;
+            padding: 2em;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #4a148c;
+            margin-bottom: 1em;
+        }
+
+        select,
+        input,
+        button {
+            font-size: 1.2em;
+            padding: 0.6em;
+            margin: 0.5em;
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
+
+        button {
+            background-color: #7e57c2;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5e35b1;
+        }
+
+        #game {
+            margin-top: 2em;
+            background: white;
+            border-radius: 20px;
+            padding: 2em;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .wordDisplay {
+            font-size: 3em;
+            margin: 1em 0;
+            letter-spacing: 0.4em;
+            color: #4caf50;
+        }
+
+        .feedback {
+            font-size: 1.5em;
+            margin-top: 1em;
+        }
+
+        .correct {
+            color: green;
+            animation: pop 0.5s ease-out;
+        }
+
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 2em;
+            margin-top: 1em;
+        }
+
+        option[disabled] {
+            color: gray;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #resetBtn {
+            background: #ff7043;
+        }
+
+        #resetBtn:hover {
+            background: #f4511e;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>🎉 Word Fun with Letters 🎉</h1>
+
+    <label for="chapterSelect">Choose Chapter:</label>
+    <select id="chapterSelect"></select>
+    <button id="startBtn">Start</button>
+
+    <div id="game">
+        <button id="playBtn">🔊 Hear Word</button>
+        <div id="letterContainer"></div>
+        <div id="emoji"></div>
+    </div>
+    <div>
+    </div>
+    <button id="resetBtn">🔄 Reset Game</button>
+
+    <script>
+        const allChapters = {
+            "A Naughty Kite": [
+                "WAGS",
+                "TALL",
+                "SHAKES",
+                "BREAKS",
+                "PRETTY",
+                "LIFTS",
+                "LADDER",
+                "STUCK",
+                "STRING",
+                "CAPER",
+                "GROUND"
+            ],
+            "Our Favourite Place": [
+                "FAVOURITE",
+                "TERRACE",
+                "BEAUTIFUL",
+                "EVERYTHING",
+                "BRIGHT",
+                "COLOURFUL",
+                "PAPPADS",
+                "CHASE",
+                "SPEND"
+            ],
+            "Grandma's Vegetable Garden": [
+                "SOUP",
+                "EVERYWHERE",
+                "SIMPLY",
+                "CAREFULLY",
+                "DIGGING",
+                "GROUND"
+            ],
+            "Going To The Pond": [
+                "SPRING",
+                "ASLEEP",
+                "WATER RAT",
+                "SCAMPERS",
+                "ZOOMS",
+                "SCARY",
+                "VROOM",
+                "TOWARDS",
+                "SCREECH",
+                "LOVELY"
+            ],
+            "Colours": ['red', 'blue', 'green', 'yellow', 'purple'],
+            "Animals": ['cat', 'dog', 'horse', 'elephant', 'lion'],
+            "Fruits": ['apple', 'banana', 'grape', 'orange', 'mango']
+        };
+
+        let chapterProgress = {};
+        let currentWord = "";
+        let currentChapter = "";
+        let selectedVoice = null;
+        let typedIndex = 0;
+
+        const chapterSelect = document.getElementById('chapterSelect');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const gameDiv = document.getElementById('game');
+        const playBtn = document.getElementById('playBtn');
+        const letterContainer = document.getElementById('letterContainer');
+        const emojiDiv = document.getElementById('emoji');
+
+        function initChapters() {
+            chapterProgress = {};
+            chapterSelect.innerHTML = "";
+            for (let chapter in allChapters) {
+                chapterProgress[chapter] = [...allChapters[chapter]];
+                const opt = document.createElement('option');
+                opt.value = chapter;
+                opt.textContent = chapter;
+                chapterSelect.appendChild(opt);
+            }
+        }
+
+        function updateChapterDropdown() {
+            Array.from(chapterSelect.options).forEach(opt => {
+                const chapter = opt.value;
+                opt.disabled = chapterProgress[chapter].length === 0;
+            });
+        }
+
+        resetBtn.addEventListener('click', () => {
+            initChapters();
+            updateChapterDropdown();
+            gameDiv.style.display = 'none';
+            emojiDiv.textContent = '';
+        });
+
+        function loadVoices() {
+
+
+            const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+
+            // Try to find a good one
+            selectedVoice =
+                voices.find(v => v.name.includes('Google UK')) ||
+                voices.find(v => v.name.includes('Zira')) ||
+                voices.find(v => v.name.includes('Samantha')) ||
+                voices.find(v => v.name.includes('Alex')) ||
+                voices[0]; // fallback
+        }
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        startBtn.addEventListener('click', () => {
+            console.log("start Btnclicked")
+            startBtn.blur(); // 👈 This line removes focus so Enter doesn't trigger again
+            const sel = chapterSelect.value;
+            if (!sel || chapterProgress[sel].length === 0) return;
+            currentChapter = sel;
+            pickNewWord();
+            gameDiv.style.display = 'block';
+        });
+
+        function pickNewWord() {
+            console.log("pickNewWord")
+            const list = chapterProgress[currentChapter];
+            if (list.length === 0) {
+                alert("All words in this chapter are completed!");
+                updateChapterDropdown();
+                return;
+            }
+            const index = Math.floor(Math.random() * list.length);
+            currentWord = list.splice(index, 1)[0];
+            updateChapterDropdown();
+            typedIndex = 0;
+            emojiDiv.textContent = '';
+            renderLetterBoxes();
+            speakWord(currentWord);
+        }
+
+        function speakWord(text) {
+            speechSynthesis.cancel(); // 🔴 Cancel anything queued or ongoing
+            if (!selectedVoice) loadVoices();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.voice = selectedVoice;
+            msg.rate = 0.8;
+            speechSynthesis.speak(msg);
+        }
+
+        playBtn.addEventListener('click', () => speakWord(currentWord));
+
+        function renderLetterBoxes() {
+            letterContainer.innerHTML = "";
+            currentWord.split("").forEach((ch, i) => {
+                const span = document.createElement('span');
+                span.className = 'letter-box';
+                span.dataset.index = i;
+                span.textContent = (i === 0 ? ch.toUpperCase() : "_");
+                letterContainer.appendChild(span);
+            });
+            typedIndex = 1; // First letter is revealed
+        }
+
+        document.addEventListener('keydown', (e) => {
+            console.log("keydown", e.key)
+            if (!gameDiv.style.display || !currentWord) return;
+            if (e.key === 'Enter') {
+                if (typedIndex >= currentWord.length) {
+                    // All letters filled
+                    emojiDiv.textContent = "Loading....";
+                    setTimeout(() => {
+                        emojiDiv.textContent = '';
+                        console.log("setTimeout")
+                        pickNewWord();
+                    }, 1200);
+                }
+                return;
+            }
+
+            if (e.key.length !== 1 || typedIndex >= currentWord.length) return;
+
+            const typed = e.key.toLowerCase();
+            const expected = currentWord[typedIndex].toLowerCase();
+            const box = letterContainer.querySelector(`[data-index="${typedIndex}"]`);
+            if (typed === expected) {
+                box.textContent = expected;
+                box.classList.add('correct');
+                typedIndex++;
+                if (typedIndex === currentWord.length) {
+                    emojiDiv.textContent = "🎉 Well done! Press Enter ⏎";
+                }
+            } else {
+                box.classList.add('wrong');
+                setTimeout(() => box.classList.remove('wrong'), 400);
+                speakWord(`Oh no, its not ${typed}, try again`);
+            }
+        });
+
+        // Init
+        initChapters();
+        loadVoices();
+        updateChapterDropdown();
+    </script>
+</body>
+
+</html>

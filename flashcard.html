@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Letter Flashcards - Kannada & Hindi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #f8b500, #fceabb);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background 0.3s;
+    }
 
+    #controls {
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      font-size: 1.2rem;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+      border: none;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    #letter {
+      font-size: 10rem;
+      color: #fff;
+      text-shadow: 2px 2px #000;
+      margin-top: 20px;
+      user-select: none;
+    }
+
+    #nextBtn {
+      font-size: 1.5rem;
+      padding: 12px 20px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="controls">
+    <label for="languageSelect">Choose Language:</label>
+    <select id="languageSelect">
+      <option value="kannada">Kannada</option>
+      <option value="hindi">Hindi</option>
+      <option value="both">Both</option>
+    </select>
+    <button onclick="showRandomLetter()">Start / Next</button>
+  </div>
+
+  <div id="letter">?</div>
+
+  <script>
+    const kannadaLetters = [
+      'ಅ', 'ಆ', 'ಇ', 'ಈ', 'ಉ', 'ಊ', 'ಋ', 'ಎ', 'ಏ', 'ಐ', 'ಒ', 'ಓ', 'ಔ',
+      'ಕ', 'ಖ', 'ಗ', 'ಘ', 'ಙ', 'ಚ', 'ಛ', 'ಜ', 'ಝ', 'ಞ',
+      'ಟ', 'ಠ', 'ಡ', 'ಢ', 'ಣ', 'ತ', 'ಥ', 'ದ', 'ಧ', 'ನ',
+      'ಪ', 'ಫ', 'ಬ', 'ಭ', 'ಮ', 'ಯ', 'ರ', 'ಲ', 'ವ', 'ಶ', 'ಷ', 'ಸ', 'ಹ', 'ಳ'
+    ];
+
+    const hindiLetters = [
+      'अ', 'आ', 'इ', 'ई', 'उ', 'ऊ', 'ऋ', 'ए', 'ऐ', 'ओ', 'औ',
+      'क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ',
+      'ट', 'ठ', 'ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न',
+      'प', 'फ', 'ब', 'भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह', 'ळ'
+    ];
+
+    function showRandomLetter() {
+      const language = document.getElementById('languageSelect').value;
+      let pool = [];
+
+      if (language === 'kannada') {
+        pool = kannadaLetters;
+      } else if (language === 'hindi') {
+        pool = hindiLetters;
+      } else {
+        pool = kannadaLetters.concat(hindiLetters);
+      }
+
+      const randomLetter = pool[Math.floor(Math.random() * pool.length)];
+      document.getElementById('letter').textContent = randomLetter;
+
+      // Change background to a random pastel color for fun
+      document.body.style.background = getRandomGradient();
+    }
+
+    function getRandomGradient() {
+      const colors = ['#f8b500', '#fceabb', '#a18cd1', '#fbc2eb', '#fad0c4', '#ffd3a5', '#fdcbf1'];
+      const color1 = colors[Math.floor(Math.random() * colors.length)];
+      const color2 = colors[Math.floor(Math.random() * colors.length)];
+      return `linear-gradient(135deg, ${color1}, ${color2})`;
+    }
+
+    // Allow keyboard spacebar to trigger next letter
+    document.body.addEventListener('keydown', function(e) {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        showRandomLetter();
+      }
+    });
+  </script>
+
+</body>
+</html>

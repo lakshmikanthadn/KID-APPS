@@ -7,7 +7,7 @@
     body {
       margin: 0;
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #f8b500, #fceabb); /* Static background */
+      background: linear-gradient(135deg, #f8b500, #fceabb);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -19,7 +19,7 @@
       margin-bottom: 20px;
     }
 
-    select, button {
+    select {
       font-size: 1.2rem;
       padding: 10px;
       margin: 5px;
@@ -30,19 +30,11 @@
     }
 
     #letter {
-      font-size: 16rem; /* Increased font size */
+      font-size: 26rem;
       color: #fff;
       text-shadow: 2px 2px #000;
       margin-top: 20px;
       user-select: none;
-    }
-
-    #nextBtn {
-      font-size: 1.5rem;
-      padding: 12px 20px;
-      margin-top: 20px;
-      background-color: #4CAF50;
-      color: white;
     }
   </style>
 </head>
@@ -56,7 +48,6 @@
       <option value="english">English</option>
       <option value="both">All</option>
     </select>
-    <button onclick="showRandomLetter()">Start / Next</button>
   </div>
 
   <div id="letter">?</div>
@@ -101,7 +92,12 @@
       document.getElementById('letter').textContent = randomLetter;
     }
 
-    // Allow spacebar to trigger next letter
+    // Trigger letter change on any click
+    document.body.addEventListener('click', function() {
+      showRandomLetter();
+    });
+
+    // Also allow spacebar for convenience
     document.body.addEventListener('keydown', function(e) {
       if (e.code === 'Space') {
         e.preventDefault();

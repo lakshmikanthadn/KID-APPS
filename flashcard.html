@@ -47,6 +47,7 @@
       <option value="hindi">Hindi</option>
       <option value="english">English</option>
       <option value="kangun">Kan-Gunithakshara</option>
+      <option value="K-V-O">K-V-O</option>
     </select>
   </div>
 
@@ -177,6 +178,27 @@
       
     )
 
+  const KVO = [].concat(
+          [
+    "ಕೊ","ಖೊ","ಗೊ","ಘೊ","ಙೊ","ಚೊ","ಛೊ","ಜೊ","ಝೊ","ಞೊ",
+    "ಟೊ","ಠೊ","ಡೊ","ಢೊ","ಣೊ","ತೊ","ಥೊ","ದೊ","ಧೊ","ನೊ",
+    "ಪೊ","ಫೊ","ಬೊ","ಭೊ","ಮೊ","ಯೊ","ರೊ","ಲೊ","ವೊ",
+    "ಶೊ","ಷೊ","ಸೊ","ಹೊ","ಳೊ"
+],
+      [
+    "ಕೋ","ಖೋ","ಗೋ","ಘೋ","ಙೋ","ಚೋ","ಛೋ","ಜೋ","ಝೋ","ಞೋ",
+    "ಟೋ","ಠೋ","ಡೋ","ಢೋ","ಣೋ","ತೋ","ಥೋ","ದೋ","ಧೋ","ನೋ",
+    "ಪೋ","ಫೋ","ಬೋ","ಭೋ","ಮೋ","ಯೋ","ರೋ","ಲೋ","ವೋ",
+    "ಶೋ","ಷೋ","ಸೋ","ಹೋ","ಳೋ"
+],
+      [
+    "ಕೌ","ಖೌ","ಗೌ","ಘೌ","ಙೌ","ಚೌ","ಛೌ","ಜೌ","ಝೌ","ಞೌ",
+    "ಟೌ","ಠೌ","ಡೌ","ಢೌ","ಣೌ","ತೌ","ಥೌ","ದೌ","ಧೌ","ನೌ",
+    "ಪೌ","ಫೌ","ಬೌ","ಭೌ","ಮೌ","ಯೌ","ರೌ","ಲೌ","ವೌ",
+    "ಶೌ","ಷೌ","ಸೌ","ಹೌ","ಳೌ"
+]
+  )
+
     function showRandomLetter() {
       const language = document.getElementById('languageSelect').value;
       let pool = [];
@@ -188,6 +210,8 @@
       } else if (language === 'english') {
         pool = englishLetters;
       } else if (language === 'kangun') {
+        pool = kannadaGunithakshara;
+      } else if (language === 'K-V-O') {
         pool = kannadaGunithakshara;
       }
 
